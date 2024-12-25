@@ -396,7 +396,7 @@ pub async fn mine(args: MineArgs, key: Keypair, url: String, unsecure: bool) {
                             app_db.get_todays_earnings(),
                             ore_api::consts::TOKEN_DECIMALS,
                         );
-                        println!("Todays Earnings: {} ORE\n", total_earnings);
+                        println!("Hari Ini: {} ORE\n", total_earnings);
                     }
                 });
 
@@ -417,14 +417,14 @@ pub async fn mine(args: MineArgs, key: Keypair, url: String, unsecure: bool) {
                             match msg {
                                 ServerMessage::StartMining(challenge, nonce_range, cutoff) => {
                                     println!(
-                                        "\nNext Challenge: {}",
+                                        "\nChange: {}",
                                         BASE64_STANDARD.encode(challenge)
                                     );
                                     println!(
-                                        "Nonce range: {} - {}",
+                                        "Range: {} - {}",
                                         nonce_range.start, nonce_range.end
                                     );
-                                    println!("Cutoff in: {}s", cutoff);
+                                    println!("Cut in: {}s", cutoff);
 
                                     // Adjust the cutoff with the buffer
                                     let mut cutoff = cutoff.saturating_sub(args.buffer as u64);
@@ -572,16 +572,16 @@ pub async fn mine(args: MineArgs, key: Keypair, url: String, unsecure: bool) {
                                     if stop.load(Ordering::Relaxed) {
                                         return;
                                     }
-                                    println!("✔ Mining complete!");
+                                    println!("✔");
                                     println!("Processed: {}", total_nonces_checked);
-                                    println!("Hash time: {:?}", hash_time);
+                                    println!("time: {:?}", hash_time);
                                     let hash_time_secs = hash_time.as_secs();
                                     if hash_time_secs > 0 {
                                         println!(
-                                            "Hashpower: {:?} H/s",
+                                            "Hash: {:?} H/s",
                                             total_nonces_checked.saturating_div(hash_time_secs)
                                         );
-                                        println!("Client found diff: {}", best_difficulty);
+                                        println!("Found: {}", best_difficulty);
                                     }
 
                                     let _ = system_submission_sender
@@ -632,7 +632,7 @@ pub async fn mine(args: MineArgs, key: Keypair, url: String, unsecure: bool) {
                                     let _ = db_sender.send(ps);
 
                                     let message = format!(
-                                        "\nMiner Earned: {:.11} ORE\n{:.4}% of total pool reward\n",
+                                        "\n\nc: {}\nP: {}\nPE:  {:.11} ORE\nPB: {:.11} ORE\nPBM: {:.2}x\n----------------------\nAM: {}\n----------------------\nMI: {}\nEarned: {:.11} ORE\n{:.4}% of reward\n",
                                         BASE64_STANDARD.encode(data.challenge),
                                         data.difficulty,
                                         data.total_rewards,
